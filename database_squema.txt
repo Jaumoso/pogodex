@@ -1,0 +1,33 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table trainers {
+  id int [pk, increment]
+  username varchar(50) [unique, not null]
+  passwordHash varchar(255) [not null]
+  role enum('User', 'Admin') [default: 'User']
+  createdAt timestamp [default: `CURRENT_TIMESTAMP`]
+  updatedAt timestamp [default: `CURRENT_TIMESTAMP`, note: 'Updated on record modification']
+
+  Note: "Stores the trainer's information, including authentication details and role."
+}
+
+Table pokemons {
+  id int [pk, increment]
+  trainerId int [not null]
+  templateId varchar(50) [not null]
+  caught boolean [default: false]
+  male boolean [default: false]
+  female boolean [default: false]
+  genderless boolean [default: true]
+  shiny boolean [default: false]
+  lucky boolean [default: false]
+  shadow boolean [default: false]
+  purified boolean [default: false]
+
+  Note: "Tracks Pokémon interactions per trainer. TemplateId corresponds to Pokémon data in the frontend."
+}
+
+
+Ref: pokemons.trainerId > trainers.id // many-to-one
+

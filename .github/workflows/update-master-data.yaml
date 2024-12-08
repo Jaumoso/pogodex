@@ -1,0 +1,46 @@
+name: Update Master Data
+on:
+  schedule:
+    - cron: "0 0 1/7 * *"
+  workflow_dispatch:
+
+env:
+  UPDATE_GAMEMASTER: false
+
+jobs:
+  update-master-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Retrieve and Validate GameMaster
+        run: |
+          curl -O https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json
+          if ! jq empty latest.json > /dev/null 2>&1; then
+            echo "Error: The file is not a valid JSON or could not be downloaded."
+            exit 1
+          fi
+          echo "File downloaded and validated successfully."
+
+      - name: Manage GameMaster
+        run: |
+          cmp -s file1.txt file2.txt
+          if [ $? -eq 0 ]; then
+            echo "Gamemaster has no changes, nothing to update."
+          else
+            echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
+          fi
+          rm frontend/public/assets/GAME_MASTER.json
+          mv master-latest.json frontend/public/assets/GAME_MASTER.json
+
+      - name: Repo update
+        if: env.UPDATE_GAMEMASTER
+        run: |
+          git config --global user.email "master-data-update-action@github.com"
+          git config --global user.name "master-data-update-action"
+          git add .
+          git commit -m "Update master data [Automated Update]"
+          git push origin/main

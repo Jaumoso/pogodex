@@ -1,0 +1,73 @@
+<div class="pokemon-list">
+  <div *ngFor="let pokemon of pokemonList" class="pokemon-item">
+    <div class="pokemon-frame">
+      <div
+        class="pokemon-icon-container"
+        [style.background]="getBackgroundColor(pokemon.type, pokemon?.type2)"
+      >
+        <div *ngIf="pokemon.form" class="pokemon-form">
+          {{ pokemon.form }}
+        </div>
+        <a
+          *ngIf="!pokemon.form"
+          href="https://pokemondb.net/pokedex/{{ pokemon.name }}"
+          ><img
+            NgOptimizedImage
+            loading="lazy"
+            [src]="getPokemonImageUrl(pokemon.name)"
+            alt="{{ pokemon.name }}"
+        /></a>
+        <a
+          *ngIf="pokemon.sprite"
+          href="https://pokemondb.net/pokedex/{{ pokemon.sprite }}"
+          ><img
+            loading="lazy"
+            [src]="getPokemonImageUrl(pokemon.sprite)"
+            alt="{{ pokemon.sprite }}"
+        /></a>
+        <div class="pokemon-name">
+          {{ pokemon.name | uppercase }}
+        </div>
+        <div class="pokemon-pokedex">
+          {{ pokemon.pokedexNumber }}
+        </div>
+        <div class="pokemon-type1">
+          <img
+            src="assets/icons/types/icon_{{ pokemon.type }}.png"
+            alt="{{ pokemon.type }}"
+          />
+        </div>
+        <div *ngIf="pokemon.type2" class="pokemon-type2">
+          <img
+            src="assets/icons/types/icon_{{ pokemon.type2 }}.png"
+            alt="{{ pokemon.type2 }}"
+          />
+        </div>
+      </div>
+
+      <div class="pokemon-variants">
+        <button [disabled]="!pokemon.gender.male">
+          <img src="assets/icons/male.png" alt="Male" />
+        </button>
+        <button [disabled]="!pokemon.gender.female">
+          <img src="assets/icons/female.png" alt="Female" />
+        </button>
+        <button [disabled]="!pokemon.gender.genderless">
+          <img src="assets/icons/genderless.png" alt="Genderless" />
+        </button>
+        <button>
+          <img src="assets/icons/shiny.png" alt="Shiny" />
+        </button>
+        <button [disabled]="!pokemon.canBeLucky">
+          <img src="assets/icons/lucky.png" alt="Lucky" />
+        </button>
+        <button [disabled]="!pokemon.canBeShadow">
+          <img src="assets/icons/shadow.png" alt="Shadow" />
+        </button>
+        <button [disabled]="!pokemon.canBeShadow">
+          <img src="assets/icons/purified.png" alt="Purified" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
