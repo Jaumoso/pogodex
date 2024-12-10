@@ -1,6 +1,6 @@
-<form [formGroup]="loginForm">
-  <div class="header">Login to your account</div>
-  <p>Form Status: {{ loginForm.status }}</p>
+<form [formGroup]="registerForm">
+  <div class="header">Create account in PoGO Dex</div>
+  <p>Form Status: {{ registerForm.status }}</p>
   <mat-form-field>
     <input
       matInput
@@ -48,21 +48,51 @@
     }
   </mat-form-field>
 
+  <mat-form-field>
+    <input
+      type="{{ showPassword ? 'text' : 'password' }}"
+      matInput
+      id="passwordValidation"
+      placeholder="Password"
+      formControlName="passwordValidation"
+      required
+    />
+    <mat-icon
+      *ngIf="showPassword"
+      class="material-symbols-outlined"
+      matTooltip="Hide Password"
+      matSuffix
+      onKeyPress
+      (click)="toggleShowPassword()"
+      >visibility</mat-icon
+    >
+    <mat-icon
+      *ngIf="!showPassword"
+      class="material-symbols-outlined"
+      matTooltip="Show Password"
+      matSuffix
+      onKeyPress
+      (click)="toggleShowPassword()"
+      >visibility_off</mat-icon
+    >
+    @if (password.invalid) {
+    <mat-error>{{ errorMessage() }}</mat-error>
+    }
+  </mat-form-field>
+
   <div class="actions">
     <button
       mat-flat-button
       color="primary"
       type="submit"
-      (click)="login()"
-      [disabled]="!loginForm.valid"
+      (click)="register()"
+      [disabled]="!registerForm.valid"
     >
-      Login
+      Sign up
     </button>
     <div class="separator">
       <span>OR</span>
     </div>
-    <button mat-stroked-button type="button" routerLink="/register">
-      Sign up
-    </button>
+    <button mat-stroked-button type="button" routerLink="/login">Login</button>
   </div>
 </form>

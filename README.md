@@ -64,3 +64,4 @@ Start the backend
 
 - [PokeMiners](https://github.com/PokeMiners)
 - [Awesome README](https://github.com/matiassingers/awesome-readme)
+- [vidoardes/dex](https://github.com/vidoardes/dex)

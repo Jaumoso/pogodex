@@ -10,23 +10,6 @@ import { baseURL } from '../shared/baseURL';
 export class TrainerService {
   constructor(private readonly http: HttpClient) {}
 
-  trainerRegister(username: string, password: string): Observable<any> {
-    return this.http
-      .post(`${baseURL}/trainer/register`, {
-        username: username,
-        password: password,
-      })
-      .pipe(
-        catchError((error) => {
-          console.error(
-            `Error in TrainerService -> POST ${baseURL}/trainer/register`,
-            error
-          );
-          throw error;
-        })
-      );
-  }
-
   getTrainerData(id: string): Observable<Trainer> {
     return this.http.get<Trainer>(`${baseURL}/trainer/${id}`).pipe(
       catchError((error) => {

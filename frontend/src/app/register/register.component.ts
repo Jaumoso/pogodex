@@ -1,8 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router, RouterLink } from '@angular/router';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { Component, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -11,13 +7,17 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { Router, RouterLink } from '@angular/router';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [
     MatInputModule,
     MatFormFieldModule,
@@ -27,24 +27,28 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     RouterLink,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
 })
-export class LoginComponent {
-  loginForm: FormGroup;
+export class RegisterComponent {
+  registerForm: FormGroup;
 
   constructor(
     private readonly authService: AuthService,
     private readonly formBuilder: FormBuilder,
     private readonly router: Router
   ) {
-    this.loginForm = this.formBuilder.group({
+    this.registerForm = this.formBuilder.group({
       username: this.username,
       password: this.password,
+      passwordValidation: this.passwordValidation,
     });
 
-    merge(this.username.statusChanges, this.password.valueChanges)
+    merge(
+      this.username.statusChanges,
+      this.password.valueChanges,
+      this.passwordValidation.valueChanges
+    )
       .pipe(takeUntilDestroyed())
       .subscribe(() => this.updateErrorMessage());
   }
@@ -59,6 +63,11 @@ export class LoginComponent {
     Validators.minLength(8),
     // TODO: More password validations
   ]);
+  passwordValidation = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    // TODO: More password validations
+  ]);
 
   ngOnInit() {
     if (this.authService.isLoggedIn()) {
@@ -66,15 +75,14 @@ export class LoginComponent {
     }
   }
 
-  login() {
-    if (this.loginForm.valid) {
-      const { username, password } = this.loginForm.value;
-      this.authService.trainerLogin(username, password).subscribe({
+  register() {
+    if (this.registerForm.valid) {
+      const { username, password } = this.registerForm.value;
+      this.authService.trainerRegister(username, password).subscribe({
         next: (response) => {
           if (response?.token) {
-            console.log(response.token);
             this.authService.setSession(response.token);
-            this.router.navigateByUrl('pokelist');
+            this.router.navigateByUrl('login');
           }
         },
       });
