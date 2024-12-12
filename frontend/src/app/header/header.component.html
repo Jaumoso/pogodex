@@ -1,0 +1,29 @@
+<header class="header">
+  <div class="title">
+    <span>PoGO DEX</span>
+  </div>
+
+  <nav>
+    <div class="options-label">
+      <mat-slide-toggle></mat-slide-toggle>
+      <span>Advanced Checklist</span>
+    </div>
+
+    <button mat-flat-button id="admin-button" class="admin-button">
+      Admin Panel
+    </button>
+
+    <button
+      mat-flat-button
+      id="logout-button"
+      class="logout-button"
+      (click)="logOut()"
+      [hidden]="!isLoggedIn"
+    >
+      Log Out
+    </button>
+  </nav>
+</header>
+<button mat-flat-button id="go-to-top">
+  <mat-icon>arrow_upward</mat-icon> Top
+</button>

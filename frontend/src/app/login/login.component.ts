@@ -72,7 +72,6 @@ export class LoginComponent {
       this.authService.trainerLogin(username, password).subscribe({
         next: (response) => {
           if (response?.token) {
-            console.log(response.token);
             this.authService.setSession(response.token);
             this.router.navigateByUrl('pokelist');
           }

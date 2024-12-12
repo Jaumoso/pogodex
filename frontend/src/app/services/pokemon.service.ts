@@ -104,7 +104,7 @@ export class PokemonService {
           },
         }));
 
-        console.log(pokemon);
+        // console.log(pokemon);
 
         return pokemon;
       })
