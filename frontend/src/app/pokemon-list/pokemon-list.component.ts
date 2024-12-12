@@ -1,14 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PokemonService } from '../services/pokemon.service';
 import { Pokemon } from '../shared/Pokemon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
+import { AdvancedChecklistService } from '../services/advanced-checklist.service';
+
 @Component({
   selector: 'app-pokemon-list',
-  imports: [CommonModule],
+  imports: [CommonModule, MatTooltipModule, MatButtonModule],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss',
 })
-export class PokemonListComponent {
+export class PokemonListComponent implements OnInit, OnDestroy {
   getBackgroundColor(type: string, type2?: string): string {
     const typeColors: { [key: string]: string } = {
       fire: '#FF6D6D',
@@ -38,10 +43,19 @@ export class PokemonListComponent {
   }
 
   pokemonList: Pokemon[] = [];
+  advancedChecklist = false;
+  private advancedChecklistSubscription!: Subscription;
 
-  constructor(private readonly pokemonService: PokemonService) {}
+  constructor(
+    private readonly pokemonService: PokemonService,
+    private readonly advancedChecklistService: AdvancedChecklistService
+  ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.advancedChecklistSubscription =
+      this.advancedChecklistService.advancedChecklist$.subscribe((state) => {
+        this.advancedChecklist = state;
+      });
     this.loadPokemonData();
   }
 
@@ -58,5 +72,11 @@ export class PokemonListComponent {
 
   getPokemonImageUrl(name: string): string {
     return `https://img.pokemondb.net/sprites/go/normal/${name.toLowerCase()}.png`;
+  }
+
+  ngOnDestroy() {
+    if (this.advancedChecklistSubscription) {
+      this.advancedChecklistSubscription.unsubscribe();
+    }
   }
 }

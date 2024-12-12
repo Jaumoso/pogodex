@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AdvancedChecklistService } from '../services/advanced-checklist.service';
 
 @Component({
   selector: 'app-header',
@@ -12,14 +13,19 @@ import { Subscription } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private readonly authService: AuthService,
+    private readonly advancedCheclistService: AdvancedChecklistService,
     private readonly router: Router
   ) {}
 
   isLoggedIn: boolean = false;
-  private subscription!: Subscription;
+  private loggedInSubscription!: Subscription;
+
+  onToggleChange(event: any) {
+    this.advancedCheclistService.setAdvanced(event.checked);
+  }
 
   logOut() {
     this.authService.closeSession();
@@ -28,9 +34,11 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.subscription = this.authService.loggedIn$.subscribe((status) => {
-      this.isLoggedIn = status;
-    });
+    this.loggedInSubscription = this.authService.loggedIn$.subscribe(
+      (status) => {
+        this.isLoggedIn = status;
+      }
+    );
 
     const goToTopButton = document.getElementById('go-to-top');
     if (goToTopButton) {
@@ -52,6 +60,6 @@ export class HeaderComponent {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.loggedInSubscription.unsubscribe();
   }
 }

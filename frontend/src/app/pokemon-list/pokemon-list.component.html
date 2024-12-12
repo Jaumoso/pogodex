@@ -46,25 +46,34 @@
       </div>
 
       <div class="pokemon-variants">
-        <button [disabled]="!pokemon.gender.male">
+        <button [disabled]="!pokemon.gender.male" matTooltip="Male">
           <img src="assets/icons/male.png" alt="Male" />
         </button>
-        <button [disabled]="!pokemon.gender.female">
+        <button [disabled]="!pokemon.gender.female" matTooltip="Female">
           <img src="assets/icons/female.png" alt="Female" />
         </button>
-        <button [disabled]="!pokemon.gender.genderless">
+        <button [disabled]="!pokemon.gender.genderless" matTooltip="Genderless">
           <img src="assets/icons/genderless.png" alt="Genderless" />
         </button>
-        <button>
+        <button *ngIf="advancedChecklist" matTooltip="3 Stars">
+          <img src="assets/icons/3stars.png" alt="3 Stars" />
+        </button>
+        <button matTooltip="Shiny">
           <img src="assets/icons/shiny.png" alt="Shiny" />
         </button>
-        <button [disabled]="!pokemon.canBeLucky">
+        <button *ngIf="advancedChecklist" matTooltip="3 Stars Shiny">
+          <img src="assets/icons/shiny3stars.png" alt="3 Stars Shiny" />
+        </button>
+        <button *ngIf="advancedChecklist" matTooltip="Perfect">
+          <img src="assets/icons/perfect.png" alt="Perfect" />
+        </button>
+        <button [disabled]="!pokemon.canBeLucky" matTooltip="Lucky">
           <img src="assets/icons/lucky.png" alt="Lucky" />
         </button>
-        <button [disabled]="!pokemon.canBeShadow">
+        <button [disabled]="!pokemon.canBeShadow" matTooltip="Shadow">
           <img src="assets/icons/shadow.png" alt="Shadow" />
         </button>
-        <button [disabled]="!pokemon.canBeShadow">
+        <button [disabled]="!pokemon.canBeShadow" matTooltip="Purified">
           <img src="assets/icons/purified.png" alt="Purified" />
         </button>
       </div>
