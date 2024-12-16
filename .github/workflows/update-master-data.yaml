@@ -17,6 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Retrieve and Validate GameMaster
+        working-directory: frontend/public/assets
         run: |
           curl -O https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json
           if ! jq empty latest.json > /dev/null 2>&1; then
@@ -26,25 +27,26 @@ jobs:
           echo "File downloaded and validated successfully."
 
       - name: Manage GameMaster
+        working-directory: frontend/public/assets
         run: |
           # Check if both files exist
-          if [ ! -f file1.txt ] || [ ! -f file2.txt ]; then
+          if [ ! -f latest.json ] || [ ! -f GAME_MASTER.json ]; then
             echo "Error: One or both files do not exist."
             exit 1
           fi
 
-          cmp -s file1.txt file2.txt
+          cmp -s latest.json GAME_MASTER.json
           if [ $? -eq 0 ]; then
             echo "Gamemaster has no changes, nothing to update."
           else
             echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
           fi
       
-          if [ -f frontend/public/assets/GAME_MASTER.json ]; then
-            rm frontend/public/assets/GAME_MASTER.json
+          if [ -f GAME_MASTER.json ]; then
+            rm GAME_MASTER.json
           fi
       
-          mv master-latest.json frontend/public/assets/GAME_MASTER.json
+          mv latest.json GAME_MASTER.json
 
       - name: Repo update
         if: env.UPDATE_GAMEMASTER
