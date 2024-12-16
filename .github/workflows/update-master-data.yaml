@@ -1,20 +1,22 @@
 name: Update Master Data
+
 on:
   schedule:
     - cron: "0 0 1/7 * *"
   workflow_dispatch:
 
-env:
-  UPDATE_GAMEMASTER: false
-
 jobs:
   update-master-data:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Set Environment Variable
+        run: echo "UPDATE_GAMEMASTER=false" >> $GITHUB_ENV
 
       - name: Retrieve and Validate GameMaster
         working-directory: frontend/public/assets
@@ -29,30 +31,31 @@ jobs:
       - name: Manage GameMaster
         working-directory: frontend/public/assets
         run: |
-          # Check if both files exist
-          if [ ! -f latest.json ] || [ ! -f GAME_MASTER.json ]; then
-            echo "Error: One or both files do not exist."
+          if [ ! -f latest.json ]; then
+            echo "Error: latest.json does not exist."
             exit 1
           fi
 
-          cmp -s latest.json GAME_MASTER.json
-          if [ $? -eq 0 ]; then
-            echo "Gamemaster has no changes, nothing to update."
+          if [ -f GAME_MASTER.json ]; then
+            cmp -s latest.json GAME_MASTER.json
+            if [ $? -eq 0 ]; then
+              echo "Gamemaster has no changes, nothing to update."
+            else
+              echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
+            fi
+            rm GAME_MASTER.json
           else
+            echo "GAME_MASTER.json does not exist. Considering this as an update."
             echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
           fi
-      
-          if [ -f GAME_MASTER.json ]; then
-            rm GAME_MASTER.json
-          fi
-      
+
           mv latest.json GAME_MASTER.json
 
       - name: Repo update
-        if: env.UPDATE_GAMEMASTER
+        if: env.UPDATE_GAMEMASTER == 'true'
         run: |
           git config --global user.email "master-data-update-action@github.com"
           git config --global user.name "master-data-update-action"
-          git add .
+          git add frontend/public/assets/GAME_MASTER.json
           git commit -m "Update master data [Automated Update]"
-          git push origin/main
+          git push origin main
