@@ -6,10 +6,11 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AdvancedChecklistService } from '../services/advanced-checklist.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule, MatButtonModule, MatSlideToggleModule],
+  imports: [MatIconModule, MatButtonModule, MatSlideToggleModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

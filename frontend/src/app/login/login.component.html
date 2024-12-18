@@ -1,47 +1,38 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" class="login-form">
   <div class="header">Login to your account</div>
-  <p>Form Status: {{ loginForm.status }}</p>
-  <mat-form-field>
+
+  <mat-form-field class="form-field">
+    <mat-label>Username</mat-label>
     <input
       matInput
       type="text"
       id="username"
-      placeholder="Username"
       autocomplete="username"
       formControlName="username"
       required
     />
-    @if (username.invalid) {
-    <mat-error>{{ errorMessage() }}</mat-error>
-    }
+    <mat-error *ngIf="loginForm.get('username')?.invalid">
+      {{ errorMessage() }}
+    </mat-error>
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Password</mat-label>
     <input
-      type="{{ showPassword ? 'text' : 'password' }}"
+      [type]="showPassword ? 'text' : 'password'"
       matInput
       id="password"
-      placeholder="Password"
       formControlName="password"
       required
     />
+
     <mat-icon
-      *ngIf="showPassword"
-      class="material-symbols-outlined"
-      matTooltip="Hide Password"
-      matSuffix
-      onKeyPress
-      (click)="toggleShowPassword()"
-      >visibility</mat-icon
-    >
-    <mat-icon
-      *ngIf="!showPassword"
       class="material-symbols-outlined"
       matTooltip="Show Password"
       matSuffix
       onKeyPress
       (click)="toggleShowPassword()"
-      >visibility_off</mat-icon
+      >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
     >
     @if (password.invalid) {
     <mat-error>{{ errorMessage() }}</mat-error>

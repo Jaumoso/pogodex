@@ -187,7 +187,7 @@ app.post("/api/auth/register", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     const role = "User";
-    const advancedChecklist = 0; // SQLite espera 0 o 1
+    const advancedChecklist = 0;
     const createdAt = new Date().toISOString();
     const updatedAt = createdAt;
 

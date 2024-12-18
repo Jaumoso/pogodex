@@ -1,7 +1,8 @@
-<form [formGroup]="registerForm">
+<form [formGroup]="registerForm" class="register-form">
   <div class="header">Create account in PoGO Dex</div>
-  <p>Form Status: {{ registerForm.status }}</p>
-  <mat-form-field>
+
+  <mat-form-field class="form-field">
+    <mat-label>Username</mat-label>
     <input
       matInput
       type="text"
@@ -16,9 +17,10 @@
     }
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Password</mat-label>
     <input
-      type="{{ showPassword ? 'text' : 'password' }}"
+      [type]="showPassword ? 'text' : 'password'"
       matInput
       id="password"
       placeholder="Password"
@@ -26,31 +28,22 @@
       required
     />
     <mat-icon
-      *ngIf="showPassword"
       class="material-symbols-outlined"
-      matTooltip="Hide Password"
+      (click)="toggleShowPassword()"
       matSuffix
       onKeyPress
-      (click)="toggleShowPassword()"
-      >visibility</mat-icon
-    >
-    <mat-icon
-      *ngIf="!showPassword"
-      class="material-symbols-outlined"
       matTooltip="Show Password"
-      matSuffix
-      onKeyPress
-      (click)="toggleShowPassword()"
-      >visibility_off</mat-icon
+      >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
     >
     @if (password.invalid) {
     <mat-error>{{ errorMessage() }}</mat-error>
     }
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="form-field">
+    <mat-label>Password Validation</mat-label>
     <input
-      type="{{ showPassword ? 'text' : 'password' }}"
+      [type]="showPassword ? 'text' : 'password'"
       matInput
       id="passwordValidation"
       placeholder="Password"
@@ -58,22 +51,12 @@
       required
     />
     <mat-icon
-      *ngIf="showPassword"
       class="material-symbols-outlined"
-      matTooltip="Hide Password"
+      (click)="toggleShowPassword()"
       matSuffix
       onKeyPress
-      (click)="toggleShowPassword()"
-      >visibility</mat-icon
-    >
-    <mat-icon
-      *ngIf="!showPassword"
-      class="material-symbols-outlined"
       matTooltip="Show Password"
-      matSuffix
-      onKeyPress
-      (click)="toggleShowPassword()"
-      >visibility_off</mat-icon
+      >{{ showPassword ? "visibility" : "visibility_off" }}</mat-icon
     >
     @if (password.invalid) {
     <mat-error>{{ errorMessage() }}</mat-error>
