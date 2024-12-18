@@ -1,4 +1,4 @@
-name: Update Master Data
+name: Update Game Master
 on:
   schedule:
     - cron: "0 0 1/7 * *"
@@ -16,6 +16,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
       - name: Retrieve and Validate GameMaster
         run: |
           curl -O https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json
@@ -27,17 +30,17 @@ jobs:
 
       - name: Manage GameMaster
         run: |
-          cmp -s file1.txt file2.txt
+          cmp -s latest.json frontend/public/assets/GAME_MASTER.json
           if [ $? -eq 0 ]; then
             echo "Gamemaster has no changes, nothing to update."
           else
             echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
           fi
           rm frontend/public/assets/GAME_MASTER.json
-          mv master-latest.json frontend/public/assets/GAME_MASTER.json
+          mv latest.json frontend/public/assets/GAME_MASTER.json
 
       - name: Repo update
-        if: env.UPDATE_GAMEMASTER
+        if: ${{ env.UPDATE_GAMEMASTER == 'true' }}
         run: |
           git config --global user.email "master-data-update-action@github.com"
           git config --global user.name "master-data-update-action"
