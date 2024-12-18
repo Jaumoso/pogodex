@@ -6,10 +6,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { AdvancedChecklistService } from '../services/advanced-checklist.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-pokemon-list',
-  imports: [CommonModule, MatTooltipModule, MatButtonModule],
+  imports: [CommonModule, MatTooltipModule, MatButtonModule, MatIconModule],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss',
 })
@@ -45,6 +46,9 @@ export class PokemonListComponent implements OnInit, OnDestroy {
   pokemonList: Pokemon[] = [];
   advancedChecklist = false;
   private advancedChecklistSubscription!: Subscription;
+  pageSize = 50;
+  currentPage = 0;
+  paginatedPokemonList: Pokemon[] = [];
 
   constructor(
     private readonly pokemonService: PokemonService,
@@ -57,17 +61,53 @@ export class PokemonListComponent implements OnInit, OnDestroy {
         this.advancedChecklist = state;
       });
     this.loadPokemonData();
+
+    const goToTopButton = document.getElementById('go-to-top');
+    if (goToTopButton) {
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+          goToTopButton.style.display = 'block';
+        } else {
+          goToTopButton.style.display = 'none';
+        }
+      });
+
+      goToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      });
+    }
   }
 
   loadPokemonData(): void {
     this.pokemonService.getPokemonData().subscribe({
       next: (data) => {
         this.pokemonList = data;
+        this.loadNextPage();
       },
       error: (err) => {
         console.error('Error al cargar los datos:', err);
       },
     });
+  }
+
+  loadNextPage(): void {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.paginatedPokemonList = [
+      ...this.paginatedPokemonList,
+      ...this.pokemonList.slice(startIndex, endIndex),
+    ];
+    this.currentPage++;
+  }
+
+  onScroll(event: Event): void {
+    const element = event.target as HTMLElement;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      this.loadNextPage(); // Cargar la siguiente página cuando llegue al final
+    }
   }
 
   getPokemonImageUrl(name: string): string {

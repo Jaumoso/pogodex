@@ -2,6 +2,9 @@
   display: grid;
   gap: 16px;
   padding: 16px;
+  overflow-y: auto;
+  border: 1px solid #fa0000;
+  height: 100vh;
 
   /* Grid layout para diferentes pantallas */
   grid-template-columns: repeat(
@@ -137,98 +140,78 @@
         }
       }
 
-      // .pokemon-variants {
-      //   display: flex;
-      //   justify-content: stretch;
-      //   flex-wrap: nowrap; /* Prevent wrapping, make buttons stay on the same line */
-      //   gap: 0; /* Remove any gap between buttons */
-      //   margin-bottom: 8px; /* No margin at the bottom */
-      //   align-self: center;
-      //   padding-left: 10px;
-      //   padding-right: 10px;
-
-      //   button {
-      //     width: 40px; /* Botón cuadrado */
-      //     height: 40px; /* Botón cuadrado */
-      //     border: none;
-      //     border-radius: 2px;
-      //     display: flex;
-      //     justify-content: center;
-      //     align-items: center;
-      //     background: black;
-      //     transition: background 0.3s, transform 0.3s;
-
-      //     &:hover {
-      //       background: #666666;
-      //       transform: scale(1.1);
-      //     }
-
-      //     &.active {
-      //       background: var(--active-color, #4caf50);
-      //     }
-
-      //     img {
-      //       width: 24px;
-      //       height: 24px;
-      //     }
-
-      //     &:disabled {
-      //       background: rgb(189, 189, 189);
-      //     }
-      //   }
-      // }
-
       .pokemon-variants {
         display: flex;
-        justify-content: space-between;
-        flex-wrap: nowrap; /* Los botones permanecen en una sola línea */
-        gap: 8px; /* Espaciado entre botones */
+        flex-direction: column;
+        gap: 8px; /* Spacing between rows */
         padding: 8px;
-        // border: 1px solid #333; /* Borde del contenedor de botones */
-        border-radius: 8px; /* Bordes redondeados del contenedor */
-        background: rgba(0, 0, 0, 0.1); /* Fondo tenue del contenedor */
-        // padding-left: 8px;
-        // padding-right: 8px;
+        background: rgba(0, 0, 0, 0.1); /* Slightly dark background */
+        border-radius: 8px;
 
-        button {
-          width: 48px; /* Botones ligeramente más grandes */
-          height: 48px;
-          border: 2px solid #ddd; /* Borde claro */
-          border-radius: 8px; /* Bordes redondeados */
+        .variant-row {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          background: #333; /* Fondo oscuro para contraste con íconos blancos */
-          box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-          transition: background 0.3s, transform 0.3s, border-color 0.3s;
+          justify-content: space-between;
+          gap: 8px;
 
-          &:hover {
-            background: #444; /* Fondo más claro al pasar el ratón */
-            border-color: #fff; /* Borde más brillante */
-            transform: scale(1.1); /* Botón se agranda */
-          }
+          button {
+            width: 48px;
+            height: 48px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s, transform 0.3s;
 
-          &.active {
-            background: #4caf50; /* Color verde para activo */
-            border-color: #fff; /* Borde blanco para destacar */
-          }
+            &:hover {
+              background: #444;
+              transform: scale(1.1);
+            }
 
-          &:disabled {
-            background: #555; /* Color gris oscuro */
-            border-color: #777; /* Borde gris */
-            cursor: not-allowed;
-            opacity: 0.7; /* Menor opacidad */
-          }
+            &:disabled {
+              background: #555;
+              border-color: #777;
+              cursor: not-allowed;
+              opacity: 0.7;
+            }
 
-          img {
-            width: 32px; /* Iconos más grandes */
-            height: 32px;
-            filter: drop-shadow(
-              0 0 8px rgba(255, 255, 255, 0.5)
-            ); /* Resalta los íconos blancos */
+            img {
+              width: 32px;
+              height: 32px;
+            }
           }
         }
       }
     }
   }
+}
+
+#go-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #282c34;
+  color: white;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.load-more-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.load-more-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.load-more-button:hover {
+  background-color: #45a049;
 }

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AuthService } from '../services/auth.service';
@@ -10,7 +9,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  imports: [MatIconModule, MatButtonModule, MatSlideToggleModule, CommonModule],
+  imports: [MatButtonModule, MatSlideToggleModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -40,24 +39,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.isLoggedIn = status;
       }
     );
-
-    const goToTopButton = document.getElementById('go-to-top');
-    if (goToTopButton) {
-      window.addEventListener('scroll', () => {
-        if (window.scrollY > 200) {
-          goToTopButton.style.display = 'block';
-        } else {
-          goToTopButton.style.display = 'none';
-        }
-      });
-
-      goToTopButton.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
-      });
-    }
   }
 
   ngOnDestroy(): void {
