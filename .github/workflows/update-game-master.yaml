@@ -45,4 +45,4 @@ jobs:
           git config --global user.name "master-data-update-action"
           git add .
           git commit -m "Update master data [Automated Update]"
-          git push origin/main
+          git push origin main
