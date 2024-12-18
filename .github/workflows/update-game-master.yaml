@@ -30,8 +30,7 @@ jobs:
 
       - name: Manage GameMaster
         run: |
-          cmp -s latest.json frontend/public/assets/GAME_MASTER.json
-          if [ $? -eq 0 ]; then
+          if cmp -s latest.json frontend/public/assets/GAME_MASTER.json; then
             echo "Gamemaster has no changes, nothing to update."
           else
             echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
