@@ -48,4 +48,4 @@ jobs:
           git add .
           git commit -m "Update master data [Automated Update]"
           git remote set-url --push origin https://jaumoso:${{ secrets.GITHUB_TOKEN }}@github.com/jaumoso/pogodex
-          git push main
+          git push
