@@ -1,0 +1,96 @@
+.register-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #3f51b5;
+}
+
+.form-status {
+  font-size: 0.9rem;
+  color: gray;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.actions {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.separator {
+  margin: 1rem 0;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.separator span {
+  background: #fff;
+  padding: 0 10px;
+  position: relative;
+  top: -10px;
+}
+
+button[mat-flat-button] {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background-color: #3f51b5;
+  transition: background 0.3s ease, transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    background: linear-gradient(to right, #3f51b5, #2196f3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    background: linear-gradient(to left, #3f51b5, #2196f3);
+    transform: scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+button[mat-stroked-button] {
+  width: 100%;
+  padding: 10px;
+  border: 2px dotted #aaa;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s;
+
+  &:hover {
+    background: linear-gradient(to right, #3f51b5, #2196f3);
+    border-color: #3f51b5;
+    color: white;
+  }
+
+  &:active {
+    background: linear-gradient(to left, #3f51b5, #2196f3);
+    border-color: #3f51b5;
+    transform: scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.togglePasswordButton {
+  background-color: none;
+  border: none;
+}

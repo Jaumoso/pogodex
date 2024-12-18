@@ -1,5 +1,5 @@
-<div class="pokemon-list">
-  <div *ngFor="let pokemon of pokemonList" class="pokemon-item">
+<div class="pokemon-list" (scroll)="onScroll($event)">
+  <div *ngFor="let pokemon of paginatedPokemonList" class="pokemon-item">
     <div class="pokemon-frame">
       <div
         class="pokemon-icon-container"
@@ -46,28 +46,50 @@
       </div>
 
       <div class="pokemon-variants">
-        <button [disabled]="!pokemon.gender.male">
-          <img src="assets/icons/male.png" alt="Male" />
-        </button>
-        <button [disabled]="!pokemon.gender.female">
-          <img src="assets/icons/female.png" alt="Female" />
-        </button>
-        <button [disabled]="!pokemon.gender.genderless">
-          <img src="assets/icons/genderless.png" alt="Genderless" />
-        </button>
-        <button>
-          <img src="assets/icons/shiny.png" alt="Shiny" />
-        </button>
-        <button [disabled]="!pokemon.canBeLucky">
-          <img src="assets/icons/lucky.png" alt="Lucky" />
-        </button>
-        <button [disabled]="!pokemon.canBeShadow">
-          <img src="assets/icons/shadow.png" alt="Shadow" />
-        </button>
-        <button [disabled]="!pokemon.canBeShadow">
-          <img src="assets/icons/purified.png" alt="Purified" />
-        </button>
+        <!-- First Row -->
+        <div class="variant-row">
+          <button [disabled]="!pokemon.gender.male" matTooltip="Male">
+            <img src="assets/icons/male.png" alt="Male" />
+          </button>
+          <button [disabled]="!pokemon.gender.female" matTooltip="Female">
+            <img src="assets/icons/female.png" alt="Female" />
+          </button>
+          <button
+            [disabled]="!pokemon.gender.genderless"
+            matTooltip="Genderless"
+          >
+            <img src="assets/icons/genderless.png" alt="Genderless" />
+          </button>
+          <button matTooltip="Shiny">
+            <img src="assets/icons/shiny.png" alt="Shiny" />
+          </button>
+          <button [disabled]="!pokemon.canBeLucky" matTooltip="Lucky">
+            <img src="assets/icons/lucky.png" alt="Lucky" />
+          </button>
+        </div>
+
+        <!-- Second Row (Visible when advancedChecklist is true) -->
+        <div *ngIf="advancedChecklist" class="variant-row">
+          <button matTooltip="3 Stars">
+            <img src="assets/icons/3stars.png" alt="3 Stars" />
+          </button>
+          <button matTooltip="3 Stars Shiny">
+            <img src="assets/icons/shiny3stars.png" alt="3 Stars Shiny" />
+          </button>
+          <button matTooltip="Perfect">
+            <img src="assets/icons/perfect.png" alt="Perfect" />
+          </button>
+          <button [disabled]="!pokemon.canBeShadow" matTooltip="Shadow">
+            <img src="assets/icons/shadow.png" alt="Shadow" />
+          </button>
+          <button matTooltip="Purified">
+            <img src="assets/icons/purified.png" alt="Purified" />
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<button mat-flat-button id="go-to-top">
+  <mat-icon>arrow_upward</mat-icon> Top
+</button>

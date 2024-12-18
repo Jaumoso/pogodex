@@ -1,25 +1,25 @@
-name: Update Master Data
-
+name: Update Game Master
 on:
   schedule:
     - cron: "0 0 1/7 * *"
   workflow_dispatch:
 
+env:
+  UPDATE_GAMEMASTER: false
+
 jobs:
   update-master-data:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set Environment Variable
-        run: echo "UPDATE_GAMEMASTER=false" >> $GITHUB_ENV
+      - name: Install jq
+        run: sudo apt-get install -y jq
 
       - name: Retrieve and Validate GameMaster
-        working-directory: frontend/public/assets
         run: |
           curl -O https://raw.githubusercontent.com/PokeMiners/game_masters/master/latest/latest.json
           if ! jq empty latest.json > /dev/null 2>&1; then
@@ -29,33 +29,21 @@ jobs:
           echo "File downloaded and validated successfully."
 
       - name: Manage GameMaster
-        working-directory: frontend/public/assets
         run: |
-          if [ ! -f latest.json ]; then
-            echo "Error: latest.json does not exist."
-            exit 1
-          fi
-
-          if [ -f GAME_MASTER.json ]; then
-            cmp -s latest.json GAME_MASTER.json
-            if [ $? -eq 0 ]; then
-              echo "Gamemaster has no changes, nothing to update."
-            else
-              echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
-            fi
-            rm GAME_MASTER.json
+          cmp -s latest.json frontend/public/assets/GAME_MASTER.json
+          if [ $? -eq 0 ]; then
+            echo "Gamemaster has no changes, nothing to update."
           else
-            echo "GAME_MASTER.json does not exist. Considering this as an update."
             echo "UPDATE_GAMEMASTER=true" >> $GITHUB_ENV
           fi
-
-          mv latest.json GAME_MASTER.json
+          rm frontend/public/assets/GAME_MASTER.json
+          mv latest.json frontend/public/assets/GAME_MASTER.json
 
       - name: Repo update
-        if: env.UPDATE_GAMEMASTER == 'true'
+        if: ${{ env.UPDATE_GAMEMASTER == 'true' }}
         run: |
           git config --global user.email "master-data-update-action@github.com"
           git config --global user.name "master-data-update-action"
-          git add frontend/public/assets/GAME_MASTER.json
+          git add .
           git commit -m "Update master data [Automated Update]"
-          git push origin main
+          git push origin/main
