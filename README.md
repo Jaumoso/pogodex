@@ -1,6 +1,6 @@
 # Pogodex
 
-Pokémon GO checklist aimed to be self-hosted.
+Pokémon GO checklist aimed to be self-hostable.
 
 ## Tech Stack
 
